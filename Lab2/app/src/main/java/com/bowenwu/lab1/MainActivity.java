@@ -90,8 +90,12 @@ public class MainActivity extends AppCompatActivity {
                     password.setErrorEnabled(true);
                     password.setError(getResources().getString(R.string.error_emptyPassword));
                 } else if (temp_sid.equals("123456") && temp_password.equals("6666")){
+                    password.setErrorEnabled(false);
+                    sid.setErrorEnabled(false);
                     showSnakebar(getResources().getString(R.string.sucess_login));
                 } else {
+                    password.setErrorEnabled(false);
+                    sid.setErrorEnabled(false);
                     showSnakebar(getResources().getString(R.string.error_wrongSidorPassword));
                 }
 
