@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Lab2</string>
+    <string name="main_title">中山大学学生信息系统</string>
+    <string name="form_username">请输入用户名</string>
+    <string name="form_password">请输入密码</string>
+
+    <string name="radio_button_student">学生</string>
+    <string name="radio_button_stuff">教职工</string>
+
+    <string name="button_login">登陆</string>
+    <string name="button_signin">注册</string>
+
+    <string name="have_select_student">你选择了学生</string>
+    <string name="have_select_stuff">你选择了教职工</string>
+    
+    <string name="dialog_title">上传头像</string>
+    <string name="dialog_cancle">取消</string>
+
+    <string name="select_cancle">您选择了【取消】</string>
+    <string name="select_takePicture">您选择了【拍摄】</string>
+    <string name="select_fromAlbum">您选择了【从相册选择】</string>
+
+    <string name="error_emptySid">学号不能为空</string>
+    <string name="error_emptyPassword">密码不能为空</string>
+    <string name="error_wrongSidorPassword">学号或密码错误</string>
+    <string name="sucess_login">登陆成功</string>
+
+    <string name="error_signin_student">学生注册功能尚未启用</string>
+    <string name="error_signin_stuff">教职工注册功能尚未开放</string>
+
+    <string name="press_snakebar">Snackbar 的确定按钮被点击了</string>
+</resources>
