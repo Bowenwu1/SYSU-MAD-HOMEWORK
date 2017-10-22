@@ -7,10 +7,14 @@
     tools:context="com.bowenwu.simpleshopping.MainActivity">
 
     <LinearLayout
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/shopping_car_title"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp">
 
         <TextView
             style="@style/index_circle"
@@ -24,7 +28,10 @@
     </LinearLayout>
 
     <ListView
+        android:id="@+id/products_in_shopping_car"
         app:layout_constraintBottom_toBottomOf="@+id/shopping_car_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="368dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="8dp"></ListView>
 </android.support.constraint.ConstraintLayout>
