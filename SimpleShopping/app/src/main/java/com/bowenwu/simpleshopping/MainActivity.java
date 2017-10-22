@@ -1,18 +1,23 @@
 package com.bowenwu.simpleshopping;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private List<Map<String, Object>> dataToShow;
+    public int productIndexReadyToDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +52,53 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                MainActivity.this.productIndexReadyToDelete = i;
+                Map<String, Object> temp = ProductManagement.getInstance().getMainActivityData().get(i);
+                String productName = (String)temp.get("product_name");
+                ProductManagement.getInstance().tryToDeleteProductInMain(productName);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                dialogBuilder.setTitle(getResources().getString(R.string.delete_product_dialog_title));
+                dialogBuilder.setMessage(getResources().getString(R.string.delete_product_in_shopping_car_dialog_content) + productName + "?");
+                dialogBuilder.setNegativeButton(getResources().getString(R.string.cancle), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // do nothing
+                    }
+                });
+                dialogBuilder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // delete the product
+                        ProductManagement.getInstance().confirmDeleteProductInMain();
+                        MainActivity.this.updateListView();
+                        MainActivity.this.ToastDeleteProduct();
+                    }
+                });
+                dialogBuilder.show();
 
-                return false;
+                return true;
             }
         });
+
+        FloatingActionButton floatingActionButton = (FloatingActionButton)findViewById(R.id.mainToShoppingCarButton);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ShoppingCarActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void updateListView() {
+        dataToShow = ProductManagement.getInstance().getMainActivityData();
+        ListView listView = (ListView)findViewById(R.id.goods_list);
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, dataToShow, R.layout.item,
+                new String[] {"first_letter", "product_name", "product_price"}, new int[] {R.id.first_letter, R.id.name, R.id.price});
+        listView.setAdapter(simpleAdapter);
+    }
+
+    public void ToastDeleteProduct() {
+        Toast.makeText(MainActivity.this, "移除第" + Integer.toString(productIndexReadyToDelete) + "个商品", Toast.LENGTH_SHORT).show();
     }
 }

@@ -7,4 +7,8 @@
     <string name="share_product">分享商品</string>
     <string name="not_interesting">不感兴趣</string>
     <string name="check_more_product">查看更多商品促销信息</string>
+    <string name="delete_product_dialog_title">移除商品</string>
+    <string name="delete_product_in_shopping_car_dialog_content">从购物车中移除</string>
+    <string name="cancle">取消</string>
+    <string name="sure">确定</string>
 </resources>

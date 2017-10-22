@@ -18,6 +18,12 @@ public class ProductManagement {
     private static boolean[] whetherDelete;
     // state : whether is in shopping_car
     private static boolean[] whetherBuy;
+
+    // 在alertDialog 确定取消按钮中无法获得之前保存的产品名称
+    // 所以在删除前先存下待确认删除的产品明
+    // 看起来这张做也许会有问题 也不优雅 先这样处理吧
+    private static String productNameReadyToDelete;
+    private static String productNameReadyToBuy;
     /**
      * Data Set
      */
@@ -80,18 +86,35 @@ public class ProductManagement {
         return result;
     }
 
-    public void deleteProduct(String productName) {
+    public void tryToDeleteProductInShoppingCar(String name) {
+        productNameReadyToDelete = name;
+    }
+    public void confirmDeleteProductInShoppingCar() {
         for (int i = 0; i < totalDataNum; ++i) {
-            if (productName.equals(goodsName[i])) {
-                whetherDelete[i] = true;
+            if (productNameReadyToDelete.equals(goodsName[i])) {
+                whetherBuy[i] = false;
                 return;
             }
         }
     }
 
-    public void buyProduct(String productName) {
+    public void tryToDeleteProductInMain(String name) {
+        productNameReadyToDelete = name;
+    }
+    public void confirmDeleteProductInMain() {
         for (int i = 0; i < totalDataNum; ++i) {
-            if (productName.equals(goodsName[i])) {
+            if (productNameReadyToDelete.equals(goodsName[i])) {
+                whetherDelete[i] = true;
+                return;
+            }
+        }
+    }
+    public void tryToBuyProduct(String productName) {
+        productNameReadyToBuy = productName;
+    }
+    public void confirmBuyProduct() {
+        for (int i = 0; i < totalDataNum; ++i) {
+            if (productNameReadyToBuy.equals(goodsName[i])) {
                 whetherBuy[i] = true;
                 return;
             }
