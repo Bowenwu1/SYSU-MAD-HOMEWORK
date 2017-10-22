@@ -1,0 +1,77 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="index_circle">
+        <item name="android:background">@drawable/circle</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="goods_name">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.6</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="goods_price">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0.2</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="detail_name">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="detail_button">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="detail_price">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="detail_type">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="more_info">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingLeft">10dp</item>
+    </style>
+
+    <style name="detail_operation">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+    </style>
+
+    <style name="detail_operation_divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:background">@color/gray</item>
+    </style>
+</resources>

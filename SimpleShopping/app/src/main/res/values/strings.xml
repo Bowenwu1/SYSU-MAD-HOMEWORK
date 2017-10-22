@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SimpleShopping</string>
+    <string name="shopping_car">购物车</string>
+    <string name="price">价格</string>
+    <string name="more_info">更多产品信息</string>
+    <string name="auto_buy">一键下单</string>
+    <string name="share_product">分享商品</string>
+    <string name="not_interesting">不感兴趣</string>
+    <string name="check_more_product">查看更多商品促销信息</string>
+</resources>
