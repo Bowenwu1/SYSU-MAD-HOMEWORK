@@ -5,8 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by bowenwu on 2017/10/22.
@@ -66,5 +73,16 @@ public class DetailActivity extends AppCompatActivity {
                 Toast.makeText(DetailActivity.this, "商品以添加到购物车", Toast.LENGTH_SHORT).show();
             }
         });
+
+        ListView listView = (ListView)findViewById(R.id.detail_operation);
+        String[] operations = new String[]{getResources().getString(R.string.auto_buy), getResources().getString(R.string.share_product),
+                getResources().getString(R.string.not_interesting), getResources().getString(R.string.check_more_product)};
+        List<Map<String, Object>> data = new ArrayList<>();
+        for (int i = 0; i < 4; ++i) {
+            Map<String, Object> t = new LinkedHashMap<>();
+            t.put("operation", operations[i]);
+            data.add(t);
+        }
+        listView.setAdapter(new SimpleAdapter(this, data, R.layout.operations, new String[]{"operation"}, new int[]{R.id.opertion_text}));
     }
 }

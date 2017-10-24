@@ -109,40 +109,14 @@
     </LinearLayout>
 
 
-
     <LinearLayout
+        android:layout_weight="0.4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="0.4">
-
-        <TextView
-            style="@style/detail_operation"
+        android:layout_height="wrap_content">
+        <ListView
+            android:id="@+id/detail_operation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/auto_buy" />
-        <ImageView style="@style/detail_operation_divider"/>
-
-        <TextView
-            style="@style/detail_operation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/share_product" />
-        <ImageView style="@style/detail_operation_divider"/>
-
-        <TextView
-            style="@style/detail_operation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/not_interesting" />
-        <ImageView style="@style/detail_operation_divider"/>
-
-
-        <TextView
-            style="@style/detail_operation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/check_more_product" />
-        <ImageView style="@style/detail_operation_divider"/>
+            android:layout_height="wrap_content"></ListView>
     </LinearLayout>
+
 </LinearLayout>
