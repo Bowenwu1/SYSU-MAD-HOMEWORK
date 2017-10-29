@@ -9,21 +9,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DetailActivity" />
+        <activity android:name=".ShoppingCarActivity"/>
 
-        <activity android:name=".DetailActivity">
+        <receiver android:name=".mWidght">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
 
-        </activity>
-
-        <activity android:name=".ShoppingCarActivity">
-
-        </activity>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/m_widght_info" />
+        </receiver>
+        
+        <receiver android:name=".StaticReceiver">
+            <intent-filter>
+                <action android:name="recommend" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

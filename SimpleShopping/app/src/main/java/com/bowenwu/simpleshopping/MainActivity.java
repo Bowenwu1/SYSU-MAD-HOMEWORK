@@ -2,6 +2,7 @@ package com.bowenwu.simpleshopping;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -12,8 +13,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
     private List<Map<String, Object>> dataToShow;
@@ -88,6 +94,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // randomly select one product and send broadcase
+        int random_num = new Random().nextInt(ProductManagement.getInstance().getProductSize());
+        Bundle bundle = generateProductBundle(random_num);
+        Intent intentBroadcase = new Intent("recommend").putExtras(bundle);
+        sendBroadcast(intentBroadcase);
+
+        // regist dyname receiver
+        IntentFilter dynamic_filter = new IntentFilter();
+        dynamic_filter.addAction("buy_now");
+        DynamicReveiver dynamicReveiver = new DynamicReveiver();
+        registerReceiver(dynamicReveiver, dynamic_filter);
+
+        EventBus.getDefault().register(this);
+
     }
 
     public void updateListView() {
@@ -100,5 +121,33 @@ public class MainActivity extends AppCompatActivity {
 
     public void ToastDeleteProduct() {
         Toast.makeText(MainActivity.this, "移除第" + Integer.toString(productIndexReadyToDelete) + "个商品", Toast.LENGTH_SHORT).show();
+    }
+
+    private Bundle generateProductBundle(int index) {
+        Bundle bundle = new Bundle();
+        Map<String, Object> temp = ProductManagement.getInstance().getMainActivityData().get(index);
+        Object[] keyValuePairs = temp.entrySet().toArray();
+        for (int j = 0; j < keyValuePairs.length; ++j) {
+            Map.Entry entry = (Map.Entry) keyValuePairs[j];
+            if (((String) entry.getKey()).equals("image_rid")) {
+                bundle.putInt((String) entry.getKey(), (int) entry.getValue());
+            } else {
+                bundle.putString((String) entry.getKey(), (String) entry.getValue());
+            }
+        }
+        return bundle;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProductBundleEvent(ProductBundleEvent event) {
+        System.out.println("get ProductEvent");
+        Intent intent = new Intent("buy_now").putExtras(event.bundle);
+        sendBroadcast(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

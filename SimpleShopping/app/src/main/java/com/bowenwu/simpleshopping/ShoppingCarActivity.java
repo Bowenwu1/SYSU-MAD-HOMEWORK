@@ -80,15 +80,20 @@ public class ShoppingCarActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShoppingCarActivity.this.finish();
+                startActivity(new Intent(ShoppingCarActivity.this, MainActivity.class));
             }
         });
     }
-
+    @Override
+    public void onNewIntent(Intent intent) {
+        updataListView();
+    }
     public void updataListView() {
         listView = (ListView)findViewById(R.id.products_in_shopping_car);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, ProductManagement.getInstance().getShoppingCarData(), R.layout.item,
                 new String[] {"first_letter", "product_name", "product_price"}, new int[] {R.id.first_letter, R.id.name, R.id.price});
         listView.setAdapter(simpleAdapter);
     }
+
+
 }

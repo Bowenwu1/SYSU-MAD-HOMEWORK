@@ -1,5 +1,9 @@
 package com.bowenwu.simpleshopping;
 
+import android.os.Bundle;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -116,8 +120,29 @@ public class ProductManagement {
         for (int i = 0; i < totalDataNum; ++i) {
             if (productNameReadyToBuy.equals(goodsName[i])) {
                 whetherBuy[i] = true;
+                System.out.println("match product name");
+                EventBus.getDefault().post(new ProductBundleEvent(generateProductBundle(i)));
                 return;
             }
         }
+    }
+
+    public int getProductSize() {
+        return getMainActivityData().size();
+    }
+
+    private Bundle generateProductBundle(int index) {
+        Bundle bundle = new Bundle();
+        Map<String, Object> temp = data.get(index);
+        Object[] keyValuePairs = temp.entrySet().toArray();
+        for (int j = 0; j < keyValuePairs.length; ++j) {
+            Map.Entry entry = (Map.Entry) keyValuePairs[j];
+            if (((String) entry.getKey()).equals("image_rid")) {
+                bundle.putInt((String) entry.getKey(), (int) entry.getValue());
+            } else {
+                bundle.putString((String) entry.getKey(), (String) entry.getValue());
+            }
+        }
+        return bundle;
     }
 }

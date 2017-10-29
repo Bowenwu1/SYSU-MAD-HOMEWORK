@@ -11,4 +11,7 @@
     <string name="delete_product_in_shopping_car_dialog_content">从购物车中移除</string>
     <string name="cancle">取消</string>
     <string name="sure">确定</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">当前没有任何消息</string>
 </resources>

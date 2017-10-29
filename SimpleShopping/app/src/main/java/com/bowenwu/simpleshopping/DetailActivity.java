@@ -1,5 +1,6 @@
 package com.bowenwu.simpleshopping;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -38,7 +39,7 @@ public class DetailActivity extends AppCompatActivity {
         product_type.setText(temp);
 
         whetherStar = false;
-        ImageButton star = (ImageButton)findViewById(R.id.detail_star);
+        final ImageButton star = (ImageButton)findViewById(R.id.detail_star);
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,17 +61,20 @@ public class DetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // result go back here
                 // this time, no result need to be returned
+                Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                startActivity(intent);
                 DetailActivity.this.finish();
             }
         });
 
+        // buy button
         ImageView buyButton = (ImageView) findViewById(R.id.shoplist);
         ProductManagement.getInstance().tryToBuyProduct((String)bundle.get("product_name"));
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ProductManagement.getInstance().confirmBuyProduct();
-                Toast.makeText(DetailActivity.this, "商品以添加到购物车", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetailActivity.this, "商品已添加到购物车", Toast.LENGTH_SHORT).show();
             }
         });
 
