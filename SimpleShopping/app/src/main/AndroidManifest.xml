@@ -23,6 +23,7 @@
         <receiver android:name=".mWidght">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="recommend" />
             </intent-filter>
 
             <meta-data

@@ -13,5 +13,10 @@
     <string name="sure">确定</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
-    <string name="add_widget">当前没有任何消息</string>
+    <string name="no_info">当前没有任何消息</string>
+    <string name="you_have_new_message">您有一条新消息</string>
+    <string name="only_sale">仅售</string>
+    <string name="buy_now">马上下单</string>
+    <string name="already_in_shopping_car">已在购物车中</string>
+    <string name="new_product_on_sale">新商品热卖</string>
 </resources>

@@ -20,11 +20,11 @@ public class DynamicReveiver extends BroadcastReceiver {
         Notification.Builder builder = new Notification.Builder(context);
         Intent[] i = {new Intent(context, ShoppingCarActivity.class)};
         PendingIntent pi = PendingIntent.getActivities(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentTitle("马上下单")
-                .setContentText((String)bundle.get("product_name")+"已添加到购物车")
-                .setTicker("您有一条新消息")
-                .setSmallIcon((int)bundle.get("image_rid"))
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), (int)bundle.get("image_rid")))
+        builder.setContentTitle(context.getResources().getString(R.string.buy_now))
+                .setContentText((String)bundle.get(ProductManagement.product_name)+context.getResources().getString(R.string.already_in_shopping_car))
+                .setTicker(context.getResources().getString(R.string.you_have_new_message))
+                .setSmallIcon((int)bundle.get(ProductManagement.image))
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), (int)bundle.get(ProductManagement.image)))
                 .setContentIntent(pi);
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notify = builder.build();

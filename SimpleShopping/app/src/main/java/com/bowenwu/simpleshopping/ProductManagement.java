@@ -15,6 +15,13 @@ import java.util.Map;
  */
 
 public class ProductManagement {
+    // infomation title
+    public final static String first_letter = "first_letter";
+    public final static String product_name = "product_name";
+    public final static String product_price = "product_price";
+    public final static String image     = "image_rid";
+    public final static String product_type  = "product_type";
+    public final static String product_info  = "product_info";
     private static ProductManagement instance;
     // all data
     public static List<Map<String, Object>> data = new ArrayList<>();
@@ -46,12 +53,12 @@ public class ProductManagement {
     private ProductManagement() {
         for (int i = 0; i < totalDataNum; ++i) {
             Map<String, Object> temp = new LinkedHashMap<>();
-            temp.put("first_letter", firstLetter[i]);
-            temp.put("product_name", goodsName[i]);
-            temp.put("product_price", price[i]);
-            temp.put("image_rid", image_rid[i]);
-            temp.put("product_type", good_type[i]);
-            temp.put("product_info", good_info[i]);
+            temp.put(ProductManagement.first_letter, firstLetter[i]);
+            temp.put(ProductManagement.product_name, goodsName[i]);
+            temp.put(ProductManagement.product_price, price[i]);
+            temp.put(ProductManagement.image, image_rid[i]);
+            temp.put(ProductManagement.product_type, good_type[i]);
+            temp.put(ProductManagement.product_info, good_info[i]);
             data.add(temp);
         }
 

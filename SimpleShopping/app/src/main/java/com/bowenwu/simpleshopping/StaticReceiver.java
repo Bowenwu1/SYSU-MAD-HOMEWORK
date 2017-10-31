@@ -20,11 +20,11 @@ public class StaticReceiver extends BroadcastReceiver {
         Notification.Builder builder = new Notification.Builder(context);
         Intent[] i = {new Intent(context, DetailActivity.class).putExtras(bundle)};
         PendingIntent pi = PendingIntent.getActivities(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentTitle("新商品热卖")
-                .setContentText((String)bundle.get("product_name")+"仅售"+(String)bundle.get("product_price"))
-                .setTicker("您有一条新消息")
-                .setSmallIcon((int)bundle.get("image_rid"))
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), (int)bundle.get("image_rid")))
+        builder.setContentTitle(context.getResources().getString(R.string.new_product_on_sale))
+                .setContentText((String)bundle.get(ProductManagement.product_name)+context.getResources().getString(R.string.only_sale)+(String)bundle.get(ProductManagement.product_price))
+                .setTicker(context.getResources().getString(R.string.you_have_new_message))
+                .setSmallIcon((int)bundle.get(ProductManagement.image))
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), (int)bundle.get(ProductManagement.image)))
                 .setContentIntent(pi);
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notify = builder.build();

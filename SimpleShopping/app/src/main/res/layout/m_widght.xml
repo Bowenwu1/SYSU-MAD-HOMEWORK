@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:padding="@dimen/widget_margin">
+    android:padding="4dp">
 
     <ImageView
         android:id="@+id/product_preview"
@@ -15,11 +15,10 @@
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:gravity="center"
-        android:paddingLeft="30dp"
-        android:contentDescription="@string/appwidget_text"
+        android:paddingLeft="15dp"
         android:text="@string/appwidget_text"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="13sp"
         android:textStyle="italic" />
 
 </LinearLayout>

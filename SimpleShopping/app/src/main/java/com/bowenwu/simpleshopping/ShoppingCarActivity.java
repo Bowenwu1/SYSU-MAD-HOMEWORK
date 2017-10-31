@@ -25,7 +25,7 @@ public class ShoppingCarActivity extends AppCompatActivity {
         setContentView(R.layout.shopping_car);
         listView = (ListView)findViewById(R.id.products_in_shopping_car);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, ProductManagement.getInstance().getShoppingCarData(), R.layout.item,
-                new String[] {"first_letter", "product_name", "product_price"}, new int[] {R.id.first_letter, R.id.name, R.id.price});
+                new String[] {ProductManagement.first_letter, ProductManagement.product_name, ProductManagement.product_price}, new int[] {R.id.first_letter, R.id.name, R.id.price});
         listView.setAdapter(simpleAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -37,7 +37,7 @@ public class ShoppingCarActivity extends AppCompatActivity {
                 Object[] keyValuePairs = temp.entrySet().toArray();
                 for (int j = 0; j < keyValuePairs.length; ++j) {
                     Map.Entry entry = (Map.Entry)keyValuePairs[j];
-                    if (((String)entry.getKey()).equals("image_rid")) {
+                    if (((String)entry.getKey()).equals(ProductManagement.image)) {
                         bundle.putInt((String) entry.getKey(), (int)entry.getValue());
                     } else {
                         bundle.putString((String) entry.getKey(), (String) entry.getValue());
@@ -81,6 +81,8 @@ public class ShoppingCarActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(ShoppingCarActivity.this, MainActivity.class));
+                // Bug Happen Here
+                ShoppingCarActivity.this.finish();
             }
         });
     }
@@ -91,7 +93,7 @@ public class ShoppingCarActivity extends AppCompatActivity {
     public void updataListView() {
         listView = (ListView)findViewById(R.id.products_in_shopping_car);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, ProductManagement.getInstance().getShoppingCarData(), R.layout.item,
-                new String[] {"first_letter", "product_name", "product_price"}, new int[] {R.id.first_letter, R.id.name, R.id.price});
+                new String[] {ProductManagement.first_letter, ProductManagement.product_name, ProductManagement.product_price}, new int[] {R.id.first_letter, R.id.name, R.id.price});
         listView.setAdapter(simpleAdapter);
     }
 

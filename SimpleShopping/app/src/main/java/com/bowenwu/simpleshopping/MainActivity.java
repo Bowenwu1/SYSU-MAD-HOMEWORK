@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
+    private DynamicReveiver dynamicReveiver;
     private List<Map<String, Object>> dataToShow;
     public int productIndexReadyToDelete;
     @Override
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         dataToShow = ProductManagement.getInstance().getMainActivityData();
         ListView listView = (ListView)findViewById(R.id.goods_list);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, dataToShow, R.layout.item,
-                new String[] {"first_letter", "product_name", "product_price"}, new int[] {R.id.first_letter, R.id.name, R.id.price});
+                new String[] {ProductManagement.first_letter, ProductManagement.product_name, ProductManagement.product_price}, new int[] {R.id.first_letter, R.id.name, R.id.price});
         listView.setAdapter(simpleAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -44,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 Object[] keyValuePairs = temp.entrySet().toArray();
                 for (int j = 0; j < keyValuePairs.length; ++j) {
                     Map.Entry entry = (Map.Entry)keyValuePairs[j];
-                    if (((String)entry.getKey()).equals("image_rid")) {
+                    if (((String)entry.getKey()).equals(ProductManagement.image)) {
                         bundle.putInt((String) entry.getKey(), (int)entry.getValue());
                     } else {
                         bundle.putString((String) entry.getKey(), (String) entry.getValue());
                     }
                 }
+                System.out.println("MainActivity to DetailActivity");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 MainActivity.this.productIndexReadyToDelete = i;
                 Map<String, Object> temp = ProductManagement.getInstance().getMainActivityData().get(i);
-                String productName = (String)temp.get("product_name");
+                String productName = (String)temp.get(ProductManagement.product_name);
                 ProductManagement.getInstance().tryToDeleteProductInMain(productName);
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
                 dialogBuilder.setTitle(getResources().getString(R.string.delete_product_dialog_title));
@@ -95,27 +97,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // randomly select one product and send broadcase
-        int random_num = new Random().nextInt(ProductManagement.getInstance().getProductSize());
-        Bundle bundle = generateProductBundle(random_num);
-        Intent intentBroadcase = new Intent("recommend").putExtras(bundle);
-        sendBroadcast(intentBroadcase);
-
         // regist dyname receiver
         IntentFilter dynamic_filter = new IntentFilter();
-        dynamic_filter.addAction("buy_now");
-        DynamicReveiver dynamicReveiver = new DynamicReveiver();
+        dynamic_filter.addAction(BroadcastType.buy_now);
+        dynamicReveiver = new DynamicReveiver();
         registerReceiver(dynamicReveiver, dynamic_filter);
+        registerReceiver(new mWidght(), dynamic_filter);
 
         EventBus.getDefault().register(this);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // randomly select one product and send broadcase
+        int random_num = new Random().nextInt(ProductManagement.getInstance().getProductSize());
+        Bundle bundle = generateProductBundle(random_num);
+        Intent intentBroadcase = new Intent(BroadcastType.recommend).putExtras(bundle);
+        sendBroadcast(intentBroadcase);
     }
 
     public void updateListView() {
         dataToShow = ProductManagement.getInstance().getMainActivityData();
         ListView listView = (ListView)findViewById(R.id.goods_list);
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, dataToShow, R.layout.item,
-                new String[] {"first_letter", "product_name", "product_price"}, new int[] {R.id.first_letter, R.id.name, R.id.price});
+                new String[] {ProductManagement.first_letter, ProductManagement.product_name, ProductManagement.product_price}, new int[] {R.id.first_letter, R.id.name, R.id.price});
         listView.setAdapter(simpleAdapter);
     }
 
@@ -129,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         Object[] keyValuePairs = temp.entrySet().toArray();
         for (int j = 0; j < keyValuePairs.length; ++j) {
             Map.Entry entry = (Map.Entry) keyValuePairs[j];
-            if (((String) entry.getKey()).equals("image_rid")) {
+            if (((String) entry.getKey()).equals(ProductManagement.image)) {
                 bundle.putInt((String) entry.getKey(), (int) entry.getValue());
             } else {
                 bundle.putString((String) entry.getKey(), (String) entry.getValue());
@@ -141,13 +148,14 @@ public class MainActivity extends AppCompatActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onProductBundleEvent(ProductBundleEvent event) {
         System.out.println("get ProductEvent");
-        Intent intent = new Intent("buy_now").putExtras(event.bundle);
+        Intent intent = new Intent(BroadcastType.buy_now).putExtras(event.bundle);
         sendBroadcast(intent);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(dynamicReveiver);
         EventBus.getDefault().unregister(this);
     }
 }

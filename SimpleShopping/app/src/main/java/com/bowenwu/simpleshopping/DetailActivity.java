@@ -32,10 +32,10 @@ public class DetailActivity extends AppCompatActivity {
         TextView product_price = (TextView)findViewById(R.id.detail_price);
         TextView product_type  = (TextView)findViewById(R.id.detail_type);
 
-        detail_image.setImageResource((int)bundle.get("image_rid"));
-        product_name.setText((String)bundle.get("product_name"));
-        product_price.setText((String)bundle.get("product_price"));
-        String temp = (String)bundle.get("product_type") + (String)bundle.get("product_info");
+        detail_image.setImageResource((int)bundle.get(ProductManagement.image));
+        product_name.setText((String)bundle.get(ProductManagement.product_name));
+        product_price.setText((String)bundle.get(ProductManagement.product_price));
+        String temp = (String)bundle.get(ProductManagement.product_type) + (String)bundle.get(ProductManagement.product_info);
         product_type.setText(temp);
 
         whetherStar = false;
