@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Lab7</string>
+    <string name="ok">OK</string>
+    <string name="clear">CLEAR</string>
+    <string name="save">SAVE</string>
+    <string name="load">LOAD</string>
+    <string name="delete">DELETE</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password">Password</string>
+    <string name="file_editor">FILE EDITOR</string>
+
+    <string name="password_can_not_empty">密码不能为空</string>
+    <string name="not_match">密码不匹配</string>
+    
+    <string name="save_successfully">Save successfully</string>
+    <string name="save_fail">Fail to save file</string>
+    <string name="load_fail">Fail to load file</string>
+    <string name="load_successfully">Load successfully</string>
+    <string name="delete_successfully">Delete successfully</string>
+    <string name="delete_fail">Fail to delete file</string>
+</resources>
