@@ -19,4 +19,8 @@
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="delete_or_not">是否删除</string>
+
+    <string name="name_can_not_be_empty">名字不能为空</string>
+    <string name="name_repeated">已经有相同的名字</string>
+    <string name="add_successfully">成功添加</string>
 </resources>
