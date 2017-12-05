@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BirthDayMemo</string>
+    <string name="add_item">增加条目</string>
+    <string name="add">添加</string>
+    <string name="name">姓名</string>
+    <string name="birthday">生日</string>
+    <string name="gift">礼物</string>
+
+    <string name="dialog_title">恭喜发财</string>
+
+    <string name="dialog_name">姓名 ： </string>
+    <string name="dialog_birthday">生日 ： </string>
+    <string name="dialog_gift">礼物 ： </string>
+    <string name="dialog_phone">手机 ： </string>
+
+    <string name="keep_change">保存修改</string>
+    <string name="giveup_change">放弃修改</string>
+</resources>
