@@ -20,7 +20,7 @@
 
     <LinearLayout
         android:id="@+id/table_title"
-        android:layout_width="368dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@+id/add_item_button"

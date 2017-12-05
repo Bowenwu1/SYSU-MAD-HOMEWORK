@@ -3,7 +3,9 @@ package com.pear.birthdaymemo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -56,15 +58,17 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final Gift gift_temp = (Gift)adapterView.getAdapter().getItem(i);
                 LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-                View view1 = layoutInflater.inflate(R.layout.dialog_layout, null);
-                TextView name = (TextView)view1.findViewById(R.id.dialog_name);
+                View viewDialog = layoutInflater.inflate(R.layout.dialog_layout, null);
+                TextView name = (TextView)viewDialog.findViewById(R.id.dialog_name);
                 name.setText(gift_temp.name);
-                final EditText birthday = (EditText)view1.findViewById(R.id.dialog_birthday);
+                final EditText birthday = (EditText)viewDialog.findViewById(R.id.dialog_birthday);
                 birthday.setText(gift_temp.birthday);
-                final EditText gift = (EditText)view1.findViewById(R.id.dialog_gift);
+                final EditText gift = (EditText)viewDialog.findViewById(R.id.dialog_gift);
                 gift.setText(gift_temp.gift);
+                TextView phoneNumber = (TextView)viewDialog.findViewById(R.id.dialog_phone);
+                phoneNumber.setText(getPhone(gift_temp.name));
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setView(view1);
+                builder.setView(viewDialog);
                 builder.setNegativeButton(getResources().getString(R.string.giveup_change), null);
                 builder.setPositiveButton(getResources().getString(R.string.keep_change), new DialogInterface.OnClickListener() {
                     @Override
@@ -166,4 +170,42 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         giftListAdapter.notifyDataSetChanged();
     }
+
+    /**
+     * Not consider Mutiple Contacts have same name
+     * @param name
+     * @return phone number in String, empty String if not exist
+     */
+    public String getPhone(String name) {
+        String result = new String();
+        Cursor cursor = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext()) {
+            int isHas = Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)));
+            if (isHas == 0) {
+                // no phone number, skip
+                continue;
+            }
+            String c_name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+            if (c_name.equals(name)) {
+                // find contacts
+                String ContactID = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
+                Cursor phone = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=" + ContactID, null, null);
+                while (phone.moveToNext()) {
+                    result += phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)) + " ";
+                }
+            }
+        }
+        return result;
+    }
+
+//    public static void verifyContactsPermission(Activity activity) {
+//        try {
+//            int permission = ActivityCompat.checkSelfPermission(activity, "android.permission.READ_CONTACTS");
+//            if (permission != PackageManager.PERMISSION_GRANTED) {
+//                // no permission
+//                ActivityCompat.requestPermissions(activity, READ_CONTACTS);
+//            }
+//        }
+//    }
 }

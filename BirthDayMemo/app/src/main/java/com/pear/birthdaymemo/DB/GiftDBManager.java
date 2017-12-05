@@ -24,8 +24,8 @@ public class GiftDBManager {
     public GiftDBManager(Context context) {
         GiftDBHelper giftDBHelper = new GiftDBHelper(context);
         db = giftDBHelper.getWritableDatabase();
-
-        this.addOneGift(new Gift("123", "456", "789"));
+        // for test
+        // this.addOneGift(new Gift("123", "456", "789"));
     }
 
     public void closeDB() {
