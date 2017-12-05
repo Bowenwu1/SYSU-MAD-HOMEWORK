@@ -1,10 +1,29 @@
 package com.pear.birthdaymemo;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.pear.birthdaymemo.DB.GiftDBManager;
+import com.pear.birthdaymemo.entity.Gift;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ListView listView;
+    private GiftDBManager giftDBManager;
+    private GiftListAdapter giftListAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +43,110 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+        listView = (ListView)findViewById(R.id.list_item);
+        giftDBManager = new GiftDBManager(MainActivity.this);
+        giftListAdapter = new GiftListAdapter(giftDBManager, MainActivity.this);
+        listView.setAdapter(giftListAdapter);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final Gift gift_temp = (Gift)adapterView.getAdapter().getItem(i);
+                LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
+                View view1 = layoutInflater.inflate(R.layout.dialog_layout, null);
+                TextView name = (TextView)view1.findViewById(R.id.dialog_name);
+                name.setText(gift_temp.name);
+                final EditText birthday = (EditText)view1.findViewById(R.id.dialog_birthday);
+                birthday.setText(gift_temp.birthday);
+                final EditText gift = (EditText)view1.findViewById(R.id.dialog_gift);
+                gift.setText(gift_temp.gift);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setView(view1);
+                builder.setNegativeButton(getResources().getString(R.string.giveup_change), null);
+                builder.setPositiveButton(getResources().getString(R.string.keep_change), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        gift_temp.gift = gift.getText().toString();
+                        gift_temp.birthday = birthday.getText().toString();
+                        giftDBManager.updateOneGift(gift_temp.id, gift_temp);
+                        giftListAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.show();
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int index, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage(getResources().getString(R.string.delete_or_not));
+                builder.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Gift gift = (Gift)giftListAdapter.getItem(index);
+                        giftDBManager.deleteGift(gift.id);
+                        giftListAdapter.notifyDataSetChanged();
+                    }
+                });
+                builder.setNegativeButton(getResources().getString(R.string.no), null);
+                builder.show();
+                return true;
+            }
+        });
+    }
+
+
+    private class GiftListAdapter extends BaseAdapter {
+
+        private List<Gift> data;
+        private GiftDBManager dbManager;
+        private Context context;
+
+        GiftListAdapter(GiftDBManager d, Context c) {
+            super();
+            dbManager = d;
+            context = c;
+            data = dbManager.queryAllGifts();
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return data.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if (null == view) {
+                view = LayoutInflater.from(context).inflate(R.layout.item, null);
+            }
+            TextView name = (TextView)view.findViewById(R.id.name);
+            TextView birthday = (TextView)view.findViewById(R.id.birthday);
+            TextView gift = (TextView)view.findViewById(R.id.gift);
+
+            Gift temp = data.get(i);
+
+            name.setText(temp.name);
+            birthday.setText(temp.birthday);
+            gift.setText(temp.gift);
+
+            return view;
+        }
+
+        @Override
+        public void notifyDataSetChanged() {
+            data = dbManager.queryAllGifts();
+            super.notifyDataSetChanged();
+        }
     }
 }

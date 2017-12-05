@@ -15,4 +15,8 @@
 
     <string name="keep_change">保存修改</string>
     <string name="giveup_change">放弃修改</string>
+
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="delete_or_not">是否删除</string>
 </resources>

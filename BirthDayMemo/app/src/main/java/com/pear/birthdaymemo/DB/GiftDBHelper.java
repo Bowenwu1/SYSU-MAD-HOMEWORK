@@ -12,7 +12,7 @@ public class GiftDBHelper extends SQLiteOpenHelper{
 
     private static final String DB_NAME = "gift.db";
     private static final String TABLE_NAME  = "gift";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 4;
 
 
     public GiftDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -24,10 +24,10 @@ public class GiftDBHelper extends SQLiteOpenHelper{
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL("create table" + TABLE_NAME
+        sqLiteDatabase.execSQL("create table " + TABLE_NAME
                                 + "(_id integer primary key ,"
                                 + "name text,"
-                                + "birthday text"
+                                + "birthday text,"
                                 + "gift text)");
     }
 
