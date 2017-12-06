@@ -1,11 +1,15 @@
 package com.pear.birthdaymemo;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -33,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        verifyContactsPermission(MainActivity.this);
 
 //        Button button = (Button)findViewById(R.id.add_item_button);
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -199,13 +204,32 @@ public class MainActivity extends AppCompatActivity {
         return result;
     }
 
-//    public static void verifyContactsPermission(Activity activity) {
-//        try {
-//            int permission = ActivityCompat.checkSelfPermission(activity, "android.permission.READ_CONTACTS");
-//            if (permission != PackageManager.PERMISSION_GRANTED) {
-//                // no permission
-//                ActivityCompat.requestPermissions(activity, READ_CONTACTS);
-//            }
-//        }
-//    }
+    public static void verifyContactsPermission(Activity activity) {
+        try {
+            int permission = ActivityCompat.checkSelfPermission(activity, "android.permission.READ_CONTACTS");
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                // no permission
+                ActivityCompat.requestPermissions(activity, new String[] {Manifest.permission.READ_CONTACTS}, 1);
+            }
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult (int requestCode,
+                                     String[] permissions,
+                                     int[] grantResults) {
+        // Just one Permission
+        if (grantResults.length > 0) {
+            if (PackageManager.PERMISSION_GRANTED == grantResults[0]) {
+                // have permission, do nothing
+                return;
+            } else {
+                System.exit(0);
+            }
+        } else {
+            System.exit(0);
+        }
+    }
 }
