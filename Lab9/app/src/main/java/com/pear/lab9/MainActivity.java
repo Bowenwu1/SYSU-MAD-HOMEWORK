@@ -1,6 +1,7 @@
 package com.pear.lab9;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -92,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 // go to resp
+                String userID = userAdapter.getUserID(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", userID);
+                Intent intent = new Intent(MainActivity.this, RepositoryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -130,6 +136,9 @@ public class MainActivity extends AppCompatActivity {
             viewHolder.userId.setText(data.get(position).id);
         }
 
+        public String getUserID(int position) {
+            return data.get(position).id;
+        }
         @Override
         public int getItemCount() {
             return data.size();
