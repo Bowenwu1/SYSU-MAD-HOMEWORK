@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     UserAdapter userAdapter;
     GithubService mService;
+
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         clear_button = (Button)findViewById(R.id.clear_button);
         fetch_button = (Button)findViewById(R.id.fetch_button);
         name = (EditText)findViewById(R.id.search);
+        progressBar = (ProgressBar)findViewById(R.id.fetch_progress);
+        progressBar.setVisibility(View.INVISIBLE);
 
         fetch_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,16 +66,19 @@ public class MainActivity extends AppCompatActivity {
                 if (searchContent.isEmpty()) {
                     MainActivity.this.toastInfo(R.string.username_can_not_empty);
                 } else {
+                    progressBar.setVisibility(View.VISIBLE);
                     mService.subscribeUser(searchContent, new Subscriber<User>() {
                         @Override
                         public void onCompleted() {
                             MainActivity.this.toastInfo(R.string.fetch_user_success);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.e("MainActivity", e.getMessage());
                             MainActivity.this.toastInfo(R.string.internal_error);
+                            progressBar.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
