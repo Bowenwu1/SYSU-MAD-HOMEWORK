@@ -95,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 // go to resp
-                String userID = userAdapter.getUserID(position);
+                String userName = userAdapter.getUserName(position);
                 Bundle bundle = new Bundle();
-                bundle.putString("id", userID);
+                bundle.putString("username", userName);
                 Intent intent = new Intent(MainActivity.this, RepositoryActivity.class);
                 startActivity(intent);
             }
@@ -116,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
                         .setNegativeButton("否", null);
-                return false;
+                builder.show();
+                return true;
             }
         });
     }
@@ -136,10 +137,11 @@ public class MainActivity extends AppCompatActivity {
             viewHolder.userName.setText(data.get(position).name);
             viewHolder.userBlog.setText(data.get(position).blog);
             viewHolder.userId.setText(data.get(position).id);
+            viewHolder.position = position;
         }
 
-        public String getUserID(int position) {
-            return data.get(position).id;
+        public String getUserName(int position) {
+            return data.get(position).name;
         }
         @Override
         public int getItemCount() {
@@ -171,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
             public TextView userName;
             public TextView userId;
             public TextView userBlog;
+            // for click listener.
+            // why recyclerview so annoying???
+            int position;
             public ViewHolder(View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(this);
@@ -183,14 +188,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mClickListener != null) {
-                    mClickListener.onItemClick(v, (int)v.getTag());
+                    mClickListener.onItemClick(v, this.position);
                 }
             }
 
             @Override
             public boolean onLongClick(View view) {
                 if (mLongClickListener != null) {
-                    return mLongClickListener.onItemLongClick(view,(int) view.getTag());
+                    return mLongClickListener.onItemLongClick(view,this.position);
                 } else {
                     return false;
                 }

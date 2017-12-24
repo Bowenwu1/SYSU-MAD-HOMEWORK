@@ -3,4 +3,6 @@
     <string name="username_can_not_empty">用户名不能为空</string>
     <string name="fetch_user_success">获取用户成功</string>
     <string name="internal_error">内部错误</string>
+
+    <string name="fetch_repository_success">获取仓库成功</string>
 </resources>
