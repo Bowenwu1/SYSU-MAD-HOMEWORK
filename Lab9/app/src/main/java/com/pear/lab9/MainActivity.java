@@ -7,20 +7,22 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import rx.Observer;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -33,10 +35,13 @@ public class MainActivity extends AppCompatActivity {
     EditText name;
 
     UserAdapter userAdapter;
+    GithubService mService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mService = new GithubService();
 
         userAdapter = new UserAdapter();
 
@@ -53,38 +58,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String searchContent = name.getText().toString();
-                Retrofit retrofit = new Retrofit.Builder()
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                        .baseUrl("https://api.github.com")
-                        .client(new OkHttpClient())
-                        .build();
-                GithubService githubService = retrofit.create(GithubService.class);
+                if (searchContent.isEmpty()) {
+                    MainActivity.this.toastInfo(R.string.username_can_not_empty);
+                } else {
+                    mService.subscribeUser(searchContent, new Subscriber<User>() {
+                        @Override
+                        public void onCompleted() {
+                            MainActivity.this.toastInfo(R.string.fetch_user_success);
+                        }
 
-                githubService.getUser(searchContent)
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<User>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e("MainActivity", e.getMessage());
+                            MainActivity.this.toastInfo(R.string.internal_error);
+                        }
 
-                            }
-
-                            @Override
-                            public void onNext(User value) {
-                                userAdapter.addItem(value);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-
-                            @Override
-                            public void onComplete() {
-
-                            }
-                        });
+                        @Override
+                        public void onNext(User user) {
+                            MainActivity.this.userAdapter.addItem(user);
+                        }
+                    });
+                }
 
             }
         });
@@ -204,5 +198,8 @@ public class MainActivity extends AppCompatActivity {
         boolean onItemLongClick(View view, int position);
     }
 
+    public void toastInfo(int RID) {
+        Toast.makeText(this, RID, Toast.LENGTH_SHORT).show();
+    }
 
 }
