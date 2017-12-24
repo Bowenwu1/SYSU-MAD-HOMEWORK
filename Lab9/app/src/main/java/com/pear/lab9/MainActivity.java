@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("username", userName);
                 Intent intent = new Intent(MainActivity.this, RepositoryActivity.class);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -134,14 +135,14 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int position) {
-            viewHolder.userName.setText(data.get(position).name);
+            viewHolder.userName.setText(data.get(position).login);
             viewHolder.userBlog.setText(data.get(position).blog);
             viewHolder.userId.setText(data.get(position).id);
             viewHolder.position = position;
         }
 
         public String getUserName(int position) {
-            return data.get(position).name;
+            return data.get(position).login;
         }
         @Override
         public int getItemCount() {

@@ -8,9 +8,11 @@ public class User {
     public String name;
     public String id;
     public String blog;
-    User(String name, String id, String blog) {
+    public String login;
+    User(String name, String id, String blog, String login) {
         this.name = name;
         this.id = id;
         this.blog = blog;
+        this.login = login;
     }
 }
